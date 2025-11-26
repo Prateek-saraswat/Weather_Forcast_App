@@ -27,7 +27,15 @@
     <h1 class="text-2xl font-bold mb-1">Weather Forecast</h1>
     <p class="text-sm text-white/70">Current conditions and 5-day outlook</p>
   </div>
-
+<div id="recent-dropdown" class="mt-2 ">
+  <select id="recentCities"
+    class="px-3 py-1.5 text-sm rounded-md bg-white text-black 
+         border border-gray-300 cursor-pointer
+         w-40 sm:w-48 md:w-56">
+    <option value="">Recently searched cities</option>
+    <option value="delhi">Delhi</option>
+  </select>
+</div>
   <div>
     <button id="location-btn"
       class="px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold 
@@ -53,6 +61,7 @@
       </button>
 
     </div>
+ 
 
     <!-- Current Weather -->
     <div class="mb-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">

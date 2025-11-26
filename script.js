@@ -3,6 +3,7 @@ let searchButton = document.getElementById("search-btn");
 const BASE_URL = "https://api.openweathermap.org/data/2.5/forecast";
 const API_KEY = "fde95b9587706beec1e7c4be0e4b0ada";
 const locationBtn = document.getElementById("location-btn");
+const dropDownMenu = document.getElementById("recentCities")
 
 const days = [
   "Sunday",
@@ -72,6 +73,7 @@ function fetchForecast(url) {
     .then((data) => {
       console.log(data);
 
+saveCityToStorage(data.city.name)
       const fiveDaysData = [];
 
       let lastDate = "";
@@ -123,14 +125,48 @@ function fetchForecast(url) {
           OWM_to_WI[eachDay.weather[0].icon]
         } text-5xl ${weatherColorMap[eachDay.weather[0].main]} my-3`;
       });
+      updateRecentDropdown();
     })
     .catch(()=> alert("City not found : Enter a valid city name"));
+}
+
+function saveCityToStorage(city){
+
+let cities = JSON.parse(localStorage.getItem("recentCities"))|| []
+cities = cities.filter((c)=> c.toLowerCase() !== city.toLowerCase())
+
+cities.unshift(city)
+if(cities.length > 5)cities.pop()
+
+    localStorage.setItem("recentCities" , JSON.stringify(cities))
+
+}
+
+function updateRecentDropdown() {
+  const dropdownDiv = document.getElementById("recent-dropdown");
+  const select = document.getElementById("recentCities");
+  let cities = JSON.parse(localStorage.getItem("recentCities")) || [];
+
+  if (cities.length === 0) {
+    dropdownDiv.classList.add("hidden");
+    return;
+  }
+
+  dropdownDiv.classList.remove("hidden");
+
+  select.innerHTML = `<option value="">Recent</option>`;
+
+  cities.forEach(city => {
+    select.innerHTML += `<option value="${city}">${city}</option>`;
+  });
 }
 
 searchButton.addEventListener("click", () => {
   if(cityNameInput.value !== ""){
     let url = `${BASE_URL}?q=${cityNameInput.value}&appid=${API_KEY}&units=metric`;
   fetchForecast(url);
+   saveCityToStorage(cityNameInput.value);
+    updateRecentDropdown();
   }else{
     alert("Enter a city name to fetch data")
   }
@@ -151,3 +187,13 @@ locationBtn.addEventListener("click", () => {
       )
   );
 });
+
+dropDownMenu.addEventListener("change", (e) => {
+  const city = e.target.value;
+  if (city !== "") {
+    let url = `${BASE_URL}?q=${city}&appid=${API_KEY}&units=metric`;
+    fetchForecast(url);
+  }
+});
+
+window.addEventListener("load", updateRecentDropdown);
