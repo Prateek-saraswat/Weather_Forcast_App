@@ -4,6 +4,9 @@ const BASE_URL = "https://api.openweathermap.org/data/2.5/forecast";
 const API_KEY = "fde95b9587706beec1e7c4be0e4b0ada";
 const locationBtn = document.getElementById("location-btn");
 const dropDownMenu = document.getElementById("recentCities")
+const toggleBtn = document.getElementById("unit-toggle")
+const switchKnob = document.getElementById("switch-knob")
+let isCelcius = true
 
 const days = [
   "Sunday",
@@ -67,6 +70,40 @@ function convertSunriseTime(time) {
   document.getElementById("sunrise").innerText = `${hours}:${minutes}`;
 }
 
+function convertToC(fahrenheit) {
+  return Math.round((fahrenheit - 32) * 5 / 9);
+}
+
+function convertToF(celsius) {
+  return Math.round((celsius * 9) / 5 + 32);
+}
+
+function convertAllToF() {
+  let currentCelcius = document.getElementById("current-temp")
+  let currentUnit = document.getElementById("current-unit")
+  let feels_like_temp = document.getElementById("feels-like")
+  let feels_like_unit = document.getElementById("feels-like-unit")
+
+    currentCelcius.innerText = convertToF(parseInt(currentCelcius.innerText))
+    feels_like_temp.innerText =  convertToF(parseInt(feels_like_temp.innerText))
+    currentUnit.innerText = "°F"
+     feels_like_unit.innerText = "°C"
+  
+}
+
+function convertAlltoC () {
+  let currentFarenheight = document.getElementById("current-temp")
+  let currentUnit = document.getElementById("current-unit")
+  let feels_like_temp = document.getElementById("feels-like")
+  let feels_like_unit = document.getElementById("feels-like-unit")
+
+  currentFarenheight.innerText = convertToC(parseInt(currentFarenheight.innerText))
+  feels_like_temp.innerText =  convertToC(parseInt(feels_like_temp.innerText))
+  currentUnit.innerText = "°C"
+  feels_like_unit.innerText = "°C"
+
+}
+
 function fetchForecast(url) {
   fetch(url)
     .then((res) => res.json())
@@ -117,7 +154,7 @@ saveCityToStorage(data.city.name)
           eachDay.weather[0].description.replace(/^\w/, (c) => c.toUpperCase());
         document.getElementById(
           `next-day-${index}-temp`
-        ).innerText = `${Math.round(eachDay.main.temp)}°`;
+        ).innerText = `${Math.round(eachDay.main.temp)}°C`;
         document.getElementById(
           `next-day-${index}-humidity`
         ).innerText = `${Math.round(eachDay.main.humidity)}%`;
@@ -196,4 +233,17 @@ dropDownMenu.addEventListener("change", (e) => {
   }
 });
 
+toggleBtn.addEventListener('click',()=>{
+  if(isCelcius){
+    convertAllToF()
+    isCelcius = false
+    switchKnob.style.transform = "translateX(32px)"
+  }else{
+    convertAlltoC()
+    isCelcius = true
+    switchKnob.style.transform = "translateX(4px)"
+  }
+})
+
 window.addEventListener("load", updateRecentDropdown);
+
