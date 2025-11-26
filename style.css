@@ -17,13 +17,7 @@
       50% { transform: scale(1.05); }
     }
     
-    .search-btn {
-      transition: all 0.3s ease;
-    }
     
-    .search-btn:hover {
-      transform: translateX(2px);
-    }
     
     .forecast-item {
       transition: all 0.3s ease;
