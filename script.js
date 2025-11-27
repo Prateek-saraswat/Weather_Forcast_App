@@ -181,7 +181,7 @@ function fetchForecast(url) {
       // console.log(fiveDaysData);
        applyRainBg(data)
       
-
+console.log(data.list[0].weather[0].main = "Thunderstorm")
       if (Math.round(data.list[0].main.temp) > 40) {
         showPopUp(
           "Be Alert :Heat Warning",
