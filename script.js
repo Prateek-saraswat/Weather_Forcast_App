@@ -151,11 +151,8 @@ function fetchForecast(url) {
         }
       });
       console.log(fiveDaysData);
-applyRainBg(data)
+       applyRainBg(data)
       
-      document.getElementById("current-temp").innerText = Math.round(
-        data.list[0].main.temp
-      );
 
       if (Math.round(data.list[0].main.temp) > 40) {
         showPopUp(
@@ -173,6 +170,7 @@ applyRainBg(data)
           "There is a high possibility of rain in your area!"
         );
       }
+      document.getElementById("current-temp").innerText = Math.round(data.list[0].main.temp);
       document.getElementById("current-city").innerText = data.city.name;
       document.getElementById("current-country").innerText = data.city.country;
       document.getElementById("weather-discription").innerText =
