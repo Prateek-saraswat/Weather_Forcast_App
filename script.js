@@ -167,7 +167,7 @@ function fetchForecast(url) {
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       saveCityToStorage(data.city.name);
       const fiveDaysData = [];
       let lastDate = "";
@@ -178,7 +178,7 @@ function fetchForecast(url) {
           lastDate = date;
         }
       });
-      console.log(fiveDaysData);
+      // console.log(fiveDaysData);
        applyRainBg(data)
       
 
@@ -218,7 +218,7 @@ function fetchForecast(url) {
       convertSunriseTime(data.city.sunrise);
 
       let nextFiveDaysData = fiveDaysData.slice(1, 6);
-      console.log(nextFiveDaysData);
+      // console.log(nextFiveDaysData);
 
       nextFiveDaysData.forEach((eachDay, index) => {
         let dt = eachDay.dt_txt;
