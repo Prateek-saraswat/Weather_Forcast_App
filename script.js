@@ -241,6 +241,10 @@ function fetchForecast(url) {
       });
       document.getElementById("updateTime").innerText = new Date().toLocaleTimeString();
       updateRecentDropdown();
+       showPopUp(
+        "Location fethed sucessfully",
+        "Weather forecast has been updated with your location."
+      );
     })
     .catch(() =>
       showPopUp("Enter a valid city Name", "The name you entered was not found")
@@ -283,10 +287,7 @@ searchButton.addEventListener("click", () => {
   if (cityNameInput.value !== "") {
     let url = `${BASE_URL}?q=${cityNameInput.value}&appid=${API_KEY}&units=metric`;
     fetchForecast(url);
-    showPopUp(
-        "Location fethed sucessfully",
-        "Weather forecast has been updated with your location."
-      );
+   
     saveCityToStorage(cityNameInput.value);
     updateRecentDropdown();
   } else {
@@ -306,10 +307,7 @@ locationBtn.addEventListener("click", () => {
       let latitude = position.coords.latitude;
       let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`;
       fetchForecast(url);
-      showPopUp(
-        "Location fethed sucessfully",
-        "Weather forecast has been updated with your location."
-      );
+      
     },
     () =>
       showPopUp(
