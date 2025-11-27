@@ -1,3 +1,4 @@
+//selecting all the important elements by id
 let cityNameInput = document.getElementById("cityInput");
 let searchButton = document.getElementById("search-btn");
 const BASE_URL = "https://api.openweathermap.org/data/2.5/forecast";
@@ -7,7 +8,9 @@ const dropDownMenu = document.getElementById("recentCities");
 const toggleBtn = document.getElementById("unit-toggle");
 const switchKnob = document.getElementById("switch-knob");
 const closePopupBtn = document.getElementById("popup-close");
+let isCelcius = true;
 
+//Made a function to show popup with a default message
 function showPopUp(message = "Notice", desciption) {
   const coustomPopUpDiv = document.getElementById("custom-popup");
   const popupBox = document.getElementById("popup-box");
@@ -24,6 +27,7 @@ function showPopUp(message = "Notice", desciption) {
   }, 10);
 }
 
+//adding event listener to close the popup
 closePopupBtn.addEventListener("click", () => {
   const coustomPopUpDiv = document.getElementById("custom-popup");
   const popupBox = document.getElementById("popup-box");
@@ -32,8 +36,7 @@ closePopupBtn.addEventListener("click", () => {
   setTimeout(() => coustomPopUpDiv.classList.add("hidden"), 200);
 });
 
-let isCelcius = true;
-
+//maping icons for changing acc to weather
 const OWM_to_WI = {
   "01d": "wi-day-sunny",
   "01n": "wi-night-clear",
@@ -62,6 +65,8 @@ const OWM_to_WI = {
   "50d": "wi-fog",
   "50n": "wi-fog",
 };
+
+//colour maping to match colour acc to weather
 const weatherColorMap = {
   Clear: "text-yellow-300",
   Clouds: "text-gray-300",
@@ -79,6 +84,7 @@ const weatherColorMap = {
   Tornado: "text-red-600",
 };
 
+//made function to show sunrise time 
 function convertSunriseTime(time) {
   const date = new Date(time * 1000);
   const hours = date.getHours();
@@ -87,13 +93,15 @@ function convertSunriseTime(time) {
   document.getElementById("sunrise").innerText = `${hours}:${minutes}`;
 }
 
+//function to convert F-C
 function convertToC(fahrenheit) {
   return Math.round(((fahrenheit - 32) * 5) / 9);
 }
-
+//function to convert C-F
 function convertToF(celsius) {
   return Math.round((celsius * 9) / 5 + 32);
 }
+
 
 function convertAllToF() {
   let currentCelcius = document.getElementById("current-temp");
@@ -121,6 +129,7 @@ function convertAlltoC() {
   feels_like_unit.innerText = "°C";
 }
 
+//Function for apllying background according to the fetched data
 function applyRainBg(data){
   const bgVideo = document.getElementById("bg-video");
     let weather = data.list[0].weather[0].main
@@ -134,6 +143,26 @@ if (weather === "Rain" || weather === "Snow" || weather === "Thunderstorm") {
 }
 }
 
+function dateConvertion(dt){
+let date = new Date(dt);
+
+let formatted = date.toLocaleDateString("en-US", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+return formatted
+}
+
+function simpleFormattedDate (dt){
+let date = new Date(dt);
+
+let day = date.getDate();
+return day
+}
+
+//Funtion to fetch data from API 
 function fetchForecast(url) {
   fetch(url)
     .then((res) => res.json())
@@ -170,6 +199,7 @@ function fetchForecast(url) {
           "There is a high possibility of rain in your area!"
         );
       }
+      document.getElementById("current-date").innerText = dateConvertion(data.list[0].dt_txt)
       document.getElementById("current-temp").innerText = Math.round(data.list[0].main.temp);
       document.getElementById("current-city").innerText = data.city.name;
       document.getElementById("current-country").innerText = data.city.country;
@@ -195,7 +225,7 @@ function fetchForecast(url) {
         let dt = eachDay.dt_txt;
         let date = new Date(dt);
         let dayName = date.toLocaleDateString("en-US", { weekday: "long" });
-        document.getElementById(`next-day-${index}`).innerText = dayName;
+        document.getElementById(`next-day-${index}`).innerText = dayName
         document.getElementById(`next-day-${index}-weather`).innerText =
           eachDay.weather[0].description.replace(/^\w/, (c) => c.toUpperCase());
         document.getElementById(
@@ -204,6 +234,8 @@ function fetchForecast(url) {
         document.getElementById(
           `next-day-${index}-humidity`
         ).innerText = `${Math.round(eachDay.main.humidity)}%`;
+        document.getElementById(`next-day-${index}-wind`).innerText = `${eachDay.wind.speed} km/h`
+        document.getElementById(`date-${index}`).innerText = `${simpleFormattedDate(eachDay.dt_txt)}, `
         document.getElementById(`icon-${index}`).className = `wi ${
           OWM_to_WI[eachDay.weather[0].icon]
         } text-5xl ${weatherColorMap[eachDay.weather[0].main]} my-3`;
@@ -215,6 +247,7 @@ function fetchForecast(url) {
     );
 }
 
+//function to save current searched cities to local storage
 function saveCityToStorage(city) {
   let cities = JSON.parse(localStorage.getItem("recentCities")) || [];
   cities = cities.filter((c) => c.toLowerCase() !== city.toLowerCase());
@@ -225,6 +258,7 @@ function saveCityToStorage(city) {
   localStorage.setItem("recentCities", JSON.stringify(cities));
 }
 
+//updating dropdown
 function updateRecentDropdown() {
   const dropdownDiv = document.getElementById("recent-dropdown");
   const select = document.getElementById("recentCities");
@@ -244,6 +278,7 @@ function updateRecentDropdown() {
   });
 }
 
+//adding event listener on search button
 searchButton.addEventListener("click", () => {
   if (cityNameInput.value !== "") {
     let url = `${BASE_URL}?q=${cityNameInput.value}&appid=${API_KEY}&units=metric`;
@@ -258,6 +293,8 @@ searchButton.addEventListener("click", () => {
   }
 });
 
+
+//event listener on location button
 locationBtn.addEventListener("click", () => {
   navigator.geolocation.getCurrentPosition(
     (position) => {
@@ -267,7 +304,7 @@ locationBtn.addEventListener("click", () => {
       fetchForecast(url);
       showPopUp(
         "Location fethed sucessfully",
-        "Weather forecast has been updated wit your location."
+        "Weather forecast has been updated with your location."
       );
     },
     () =>
@@ -286,6 +323,7 @@ dropDownMenu.addEventListener("change", (e) => {
   }
 });
 
+//toogle button for changing temp unit
 toggleBtn.addEventListener("click", () => {
   if (isCelcius) {
     convertAllToF();
@@ -299,3 +337,22 @@ toggleBtn.addEventListener("click", () => {
 });
 
 window.addEventListener("load", updateRecentDropdown);
+window.addEventListener("load", () => {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      let longitude = position.coords.longitude;
+      let latitude = position.coords.latitude;
+      let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`;
+      fetchForecast(url);
+      showPopUp(
+        "Location fethed sucessfully",
+        "Weather forecast has been updated with your location."
+      );
+    },
+    () =>
+      showPopUp(
+        "User Denied Location Permission",
+        "Please allow location permission from browser settings."
+      )
+  );
+});
