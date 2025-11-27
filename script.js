@@ -239,6 +239,7 @@ function fetchForecast(url) {
           OWM_to_WI[eachDay.weather[0].icon]
         } text-5xl ${weatherColorMap[eachDay.weather[0].main]} my-3`;
       });
+      document.getElementById("updateTime").innerText = new Date().toLocaleTimeString();
       updateRecentDropdown();
     })
     .catch(() =>

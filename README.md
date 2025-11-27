@@ -79,6 +79,3 @@ OpenWeatherMap 5-Day / 3-Hour Forecast API:
 
 ```url
 https://api.openweathermap.org/data/2.5/forecast?q={cityName}&appid={API_KEY}&units=metric
-
-
-

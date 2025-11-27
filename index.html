@@ -1,28 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-IN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Weather Forecast</title>
+  <meta name="description" content="A modern weather forecasting application showing real-time weather, location-based data, and 5-day forecast.">
+  <title>Weather Forecast App</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="./favicon/favicon.png" type="image/png">
   <script src="script.js" defer></script>
   
-  <style>
-  
-  </style>
 </head>
 
 <body  class="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 min-h-screen p-4 md:p-8 flex items-center justify-center">
 
   <div class="w-full max-w-6xl glass-card rounded-3xl p-6 md:p-8 text-white shadow-2xl">
 
-    <!-- Header -->
-   <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
-  
+    <!-- Header seaction for weather application -->
+   <header>
+    <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
   <div>
     <h1 class="text-2xl font-bold mb-1">Weather Forecast</h1>
     <p class="text-sm text-white/70">Current conditions and 5-day outlook</p>
@@ -46,8 +45,9 @@
   </div>
  
 </div>
+   </header>
 
-    <!-- Search Bar -->
+    <!-- search bar for cities -->
     <div class="mb-8 relative">
       <input 
         id="cityInput"
@@ -75,7 +75,7 @@
 </div>
  
 
-    <!-- Current Weather -->
+    <!-- current weather section to show details -->
     <div class="mb-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
       <div class="text-center lg:text-left">
         <div class="inline-block weather-icon-pulse">
@@ -95,7 +95,7 @@ November 27, 2025
         </div>
       </div>
 
-      <!-- Weather Details Grid -->
+      <!-- current weather details section -->
       <div class="grid grid-cols-2 gap-4">
         <div class="glass-card detail-card p-5 rounded-2xl text-center">
           <i class="wi wi-humidity text-4xl mb-2 text-blue-200"></i>
@@ -123,7 +123,7 @@ November 27, 2025
       </div>
     </div>
 
-    <!-- 5 Day Forecast -->
+    <!-- next 5 days forcast diaplay section -->
     <div>
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-xl font-semibold"> Next 5-Day Forecast</h3>
@@ -139,51 +139,51 @@ November 27, 2025
           <div>
             <p  id="next-day-0-temp" class="text-2xl font-semibold">27°</p>
           
-            <p id="next-day-0-humidity" class="text-sm text-white/60">18°</p>
+            <p id="next-day-0-humidity" class="text-sm text-white/60">18%</p>
             <p id="next-day-0-wind" class="text-sm text-white/60">12 km/h</p>
           </div>
         </div>
 
         <div class="glass-card forecast-item flex flex-col items-center justify-center rounded-2xl p-4 text-center">
-          <p  class="font-medium mb-2"> <span id="date-1"></span><span id="next-day-1">Monday </span></p>
+          <p  class="font-medium mb-2"> <span id="date-1"></span><span id="next-day-1">Tuesday </span></p>
           <i id="icon-1" class="wi wi-day-cloudy text-5xl text-gray-200 my-3"></i>
           <p id="next-day-1-weather"  class="text-sm text-white/70 mb-2">Cloudy</p>
           <div>
             <p id="next-day-1-temp" class="text-2xl font-semibold">25°</p>
-            <p id="next-day-1-humidity"  class="text-sm text-white/60">17°</p>
+            <p id="next-day-1-humidity"  class="text-sm text-white/60">17%</p>
             <p id="next-day-1-wind"  class="text-sm text-white/60">12 km/h</p>
           </div>
         </div>
 
         <div class="glass-card forecast-item flex flex-col items-center justify-center rounded-2xl p-4 text-center">
-          <p  class="font-medium mb-2"><span id="date-2"></span><span id="next-day-2">Monday </span> </p>
+          <p  class="font-medium mb-2"><span id="date-2"></span><span id="next-day-2">Wednesday </span> </p>
           <i  id="icon-2" class="wi wi-rain text-5xl text-blue-300 my-3"></i>
           <p id="next-day-2-weather"  class="text-sm text-white/70 mb-2">Rainy</p>
           <div>
             <p  id="next-day-2-temp"  class="text-2xl font-semibold">23°</p>
-            <p  id="next-day-2-humidity"  class="text-sm text-white/60">16°</p>
+            <p  id="next-day-2-humidity"  class="text-sm text-white/60">16%</p>
             <p  id="next-day-2-wind"  class="text-sm text-white/60">12 km/h</p>
           </div>
         </div>
 
         <div class="glass-card forecast-item flex flex-col items-center justify-center rounded-2xl p-4 text-center">
-         <p  class="font-medium mb-2"> <span id="date-3"></span><span id="next-day-3">Monday </span></p>
+         <p  class="font-medium mb-2"> <span id="date-3"></span><span id="next-day-3">Thursday </span></p>
           <i id="icon-3" class="wi wi-thunderstorm text-5xl text-purple-300 my-3"></i>
           <p id="next-day-3-weather"  class="text-sm text-white/70 mb-2">Stormy</p>
           <div>
             <p id="next-day-3-temp" class="text-2xl font-semibold">21°</p>
-            <p id="next-day-3-humidity"  class="text-sm text-white/60">15°</p>
+            <p id="next-day-3-humidity"  class="text-sm text-white/60">15%</p>
             <p id="next-day-3-wind"  class="text-sm text-white/60">12 km/h</p>
           </div>
         </div>
 
         <div class="glass-card forecast-item flex flex-col items-center justify-center rounded-2xl p-4 text-center">
-         <p  class="font-medium mb-2"><span id="date-4"></span><span id="next-day-4">Monday </span> </p>
+         <p  class="font-medium mb-2"><span id="date-4"></span><span id="next-day-4">Friday </span> </p>
           <i id="icon-4" class="wi wi-snow text-5xl text-cyan-200 my-3"></i>
           <p  id="next-day-4-weather"  class="text-sm text-white/70 mb-2">Snowy</p>
           <div>
             <p id="next-day-4-temp"  class="text-2xl font-semibold">19°</p>
-            <p id="next-day-4-humidity"  class="text-sm text-white/60">12°</p>
+            <p id="next-day-4-humidity"  class="text-sm text-white/60">12%</p>
             <p id="next-day-4-wind"  class="text-sm text-white/60">12 km/h</p>
           </div>
         </div>
@@ -191,13 +191,16 @@ November 27, 2025
       </div>
     </div>
 
-    <!-- Footer -->
-    <div class="mt-8 pt-6 border-t border-white/20 text-center">
-      <p class="text-sm text-white/50">Last updated: now <span id="updateTime"></span></p>
+ 
+  <footer>
+      <div class="mt-8 pt-6 border-t border-white/20 text-center">
+      <p class="text-sm text-white/50">Last updated: <span id="updateTime"></span></p>
     </div>
+  </footer>
 
   </div>
 
+  <!-- custom popup for showing alert messages , initially hidden-->
  <div id="custom-popup"
      class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden 
             flex items-center justify-center z-50 transition-all">
@@ -220,6 +223,8 @@ November 27, 2025
     
   </div>
 </div>
+
+<!-- backgroud vedio for different different weathers -->
 <video id="bg-video" autoplay muted loop playsinline
        style="position: fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-1; display:none;">
 </video>
