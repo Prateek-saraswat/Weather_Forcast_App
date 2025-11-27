@@ -4,6 +4,7 @@ A responsive weather forecasting web application built using HTML, Tailwind CSS,
 
 ## Github Link - https://github.com/Prateek-saraswat/Weather_Forcast_App
 
+## Live Link - https://weatherforecastaple.netlify.app/
 ## Features
 
 ### Current Weather
@@ -72,6 +73,19 @@ A responsive weather forecasting web application built using HTML, Tailwind CSS,
 |      |-- Snow.mp4
 |      |-- Thunderstorm.mp4
 
+git clone https://github.com/your-repo/weather-forecast-app.git
+cd weather-forecast-app
+
+## Instructions And Usage
+
+### 1. Installation
+- No external installation or build tools are required.
+
+### 2. Clone the Repository
+- git clone https://github.com/Prateek-saraswat/Weather_Forcast_App.git
+
+### 3. Open the Application
+- Double-click index.html, or Right-click → Open With → your preferred browser.
 
 ## API Used
 
@@ -79,3 +93,4 @@ OpenWeatherMap 5-Day / 3-Hour Forecast API:
 
 ```url
 https://api.openweathermap.org/data/2.5/forecast?q={cityName}&appid={API_KEY}&units=metric
+
