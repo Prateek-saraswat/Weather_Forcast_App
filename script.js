@@ -283,6 +283,10 @@ searchButton.addEventListener("click", () => {
   if (cityNameInput.value !== "") {
     let url = `${BASE_URL}?q=${cityNameInput.value}&appid=${API_KEY}&units=metric`;
     fetchForecast(url);
+    showPopUp(
+        "Location fethed sucessfully",
+        "Weather forecast has been updated with your location."
+      );
     saveCityToStorage(cityNameInput.value);
     updateRecentDropdown();
   } else {
