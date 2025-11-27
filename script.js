@@ -3,20 +3,37 @@ let searchButton = document.getElementById("search-btn");
 const BASE_URL = "https://api.openweathermap.org/data/2.5/forecast";
 const API_KEY = "fde95b9587706beec1e7c4be0e4b0ada";
 const locationBtn = document.getElementById("location-btn");
-const dropDownMenu = document.getElementById("recentCities")
-const toggleBtn = document.getElementById("unit-toggle")
-const switchKnob = document.getElementById("switch-knob")
-let isCelcius = true
+const dropDownMenu = document.getElementById("recentCities");
+const toggleBtn = document.getElementById("unit-toggle");
+const switchKnob = document.getElementById("switch-knob");
+const closePopupBtn = document.getElementById("popup-close");
 
-const days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
+function showPopUp(message = "Notice", desciption) {
+  const coustomPopUpDiv = document.getElementById("custom-popup");
+  const popupBox = document.getElementById("popup-box");
+  const popUpMessage = document.getElementById("popup-message");
+  const popUpdesc = document.getElementById("popup-desc");
+
+  popUpMessage.innerText = message;
+  popUpdesc.innerText = desciption;
+
+  coustomPopUpDiv.classList.remove("hidden");
+  setTimeout(() => {
+    popupBox.classList.remove("scale-95", "opacity-0");
+    popupBox.classList.add("scale-100", "opacity-100");
+  }, 10);
+}
+
+closePopupBtn.addEventListener("click", () => {
+  const coustomPopUpDiv = document.getElementById("custom-popup");
+  const popupBox = document.getElementById("popup-box");
+  popupBox.classList.remove("scale-100", "opacity-100");
+  popupBox.classList.add("scale-95", "opacity-0");
+  setTimeout(() => coustomPopUpDiv.classList.add("hidden"), 200);
+});
+
+let isCelcius = true;
+
 const OWM_to_WI = {
   "01d": "wi-day-sunny",
   "01n": "wi-night-clear",
@@ -71,7 +88,7 @@ function convertSunriseTime(time) {
 }
 
 function convertToC(fahrenheit) {
-  return Math.round((fahrenheit - 32) * 5 / 9);
+  return Math.round(((fahrenheit - 32) * 5) / 9);
 }
 
 function convertToF(celsius) {
@@ -79,29 +96,42 @@ function convertToF(celsius) {
 }
 
 function convertAllToF() {
-  let currentCelcius = document.getElementById("current-temp")
-  let currentUnit = document.getElementById("current-unit")
-  let feels_like_temp = document.getElementById("feels-like")
-  let feels_like_unit = document.getElementById("feels-like-unit")
+  let currentCelcius = document.getElementById("current-temp");
+  let currentUnit = document.getElementById("current-unit");
+  let feels_like_temp = document.getElementById("feels-like");
+  let feels_like_unit = document.getElementById("feels-like-unit");
 
-    currentCelcius.innerText = convertToF(parseInt(currentCelcius.innerText))
-    feels_like_temp.innerText =  convertToF(parseInt(feels_like_temp.innerText))
-    currentUnit.innerText = "°F"
-     feels_like_unit.innerText = "°C"
-  
+  currentCelcius.innerText = convertToF(parseInt(currentCelcius.innerText));
+  feels_like_temp.innerText = convertToF(parseInt(feels_like_temp.innerText));
+  currentUnit.innerText = "°F";
+  feels_like_unit.innerText = "°C";
 }
 
-function convertAlltoC () {
-  let currentFarenheight = document.getElementById("current-temp")
-  let currentUnit = document.getElementById("current-unit")
-  let feels_like_temp = document.getElementById("feels-like")
-  let feels_like_unit = document.getElementById("feels-like-unit")
+function convertAlltoC() {
+  let currentFarenheight = document.getElementById("current-temp");
+  let currentUnit = document.getElementById("current-unit");
+  let feels_like_temp = document.getElementById("feels-like");
+  let feels_like_unit = document.getElementById("feels-like-unit");
 
-  currentFarenheight.innerText = convertToC(parseInt(currentFarenheight.innerText))
-  feels_like_temp.innerText =  convertToC(parseInt(feels_like_temp.innerText))
-  currentUnit.innerText = "°C"
-  feels_like_unit.innerText = "°C"
+  currentFarenheight.innerText = convertToC(
+    parseInt(currentFarenheight.innerText)
+  );
+  feels_like_temp.innerText = convertToC(parseInt(feels_like_temp.innerText));
+  currentUnit.innerText = "°C";
+  feels_like_unit.innerText = "°C";
+}
 
+function applyRainBg(data){
+  const bgVideo = document.getElementById("bg-video");
+    let weather = data.list[0].weather[0].main
+if (weather === "Rain" || weather === "Snow" || weather === "Thunderstorm") {
+    bgVideo.src = `./bg-vedios/${weather}.mp4`;  
+    bgVideo.style.display = "block";  
+    document.body.style.background = "none"; 
+} else {
+    bgVideo.style.display = "none";   
+    document.body.style.background = ""; 
+}
 }
 
 function fetchForecast(url) {
@@ -109,8 +139,7 @@ function fetchForecast(url) {
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
-
-saveCityToStorage(data.city.name)
+      saveCityToStorage(data.city.name);
       const fiveDaysData = [];
 
       let lastDate = "";
@@ -122,9 +151,28 @@ saveCityToStorage(data.city.name)
         }
       });
       console.log(fiveDaysData);
+applyRainBg(data)
+      
       document.getElementById("current-temp").innerText = Math.round(
         data.list[0].main.temp
       );
+
+      if (Math.round(data.list[0].main.temp) > 40) {
+        showPopUp(
+          "Be Alert :Heat Warning",
+          "Temperature of your location is too high!!"
+        );
+      } else if (Math.round(data.list[0].main.temp) < 5) {
+        showPopUp(
+          "Be Alert :Cold Warning",
+          "Temperature of your location is too low!!"
+        );
+      } else if (Math.round(data.list[0].main.humidity) > 80) {
+        showPopUp(
+          "Rain Alert",
+          "There is a high possibility of rain in your area!"
+        );
+      }
       document.getElementById("current-city").innerText = data.city.name;
       document.getElementById("current-country").innerText = data.city.country;
       document.getElementById("weather-discription").innerText =
@@ -164,19 +212,19 @@ saveCityToStorage(data.city.name)
       });
       updateRecentDropdown();
     })
-    .catch(()=> alert("City not found : Enter a valid city name"));
+    .catch(() =>
+      showPopUp("Enter a valid city Name", "The name you entered was not found")
+    );
 }
 
-function saveCityToStorage(city){
+function saveCityToStorage(city) {
+  let cities = JSON.parse(localStorage.getItem("recentCities")) || [];
+  cities = cities.filter((c) => c.toLowerCase() !== city.toLowerCase());
 
-let cities = JSON.parse(localStorage.getItem("recentCities"))|| []
-cities = cities.filter((c)=> c.toLowerCase() !== city.toLowerCase())
+  cities.unshift(city);
+  if (cities.length > 5) cities.pop();
 
-cities.unshift(city)
-if(cities.length > 5)cities.pop()
-
-    localStorage.setItem("recentCities" , JSON.stringify(cities))
-
+  localStorage.setItem("recentCities", JSON.stringify(cities));
 }
 
 function updateRecentDropdown() {
@@ -193,19 +241,22 @@ function updateRecentDropdown() {
 
   select.innerHTML = `<option value="">Recent</option>`;
 
-  cities.forEach(city => {
+  cities.forEach((city) => {
     select.innerHTML += `<option value="${city}">${city}</option>`;
   });
 }
 
 searchButton.addEventListener("click", () => {
-  if(cityNameInput.value !== ""){
+  if (cityNameInput.value !== "") {
     let url = `${BASE_URL}?q=${cityNameInput.value}&appid=${API_KEY}&units=metric`;
-  fetchForecast(url);
-   saveCityToStorage(cityNameInput.value);
+    fetchForecast(url);
+    saveCityToStorage(cityNameInput.value);
     updateRecentDropdown();
-  }else{
-    alert("Enter a city name to fetch data")
+  } else {
+    showPopUp(
+      "Search Field cannot be empty",
+      "Enter a city name to fetch weather deatails."
+    );
   }
 });
 
@@ -216,11 +267,15 @@ locationBtn.addEventListener("click", () => {
       let latitude = position.coords.latitude;
       let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`;
       fetchForecast(url);
-      alert("Weather Forecast Sucessfully Fetched!!");
+      showPopUp(
+        "Location fethed sucessfully",
+        "Weather forecast has been updated wit your location."
+      );
     },
     () =>
-      alert(
-        "Location permission denied! Please enable it from your browser settings."
+      showPopUp(
+        "User Denied Location Permission",
+        "Please allow location permission from browser settings."
       )
   );
 });
@@ -233,17 +288,16 @@ dropDownMenu.addEventListener("change", (e) => {
   }
 });
 
-toggleBtn.addEventListener('click',()=>{
-  if(isCelcius){
-    convertAllToF()
-    isCelcius = false
-    switchKnob.style.transform = "translateX(32px)"
-  }else{
-    convertAlltoC()
-    isCelcius = true
-    switchKnob.style.transform = "translateX(4px)"
+toggleBtn.addEventListener("click", () => {
+  if (isCelcius) {
+    convertAllToF();
+    isCelcius = false;
+    switchKnob.style.transform = "translateX(32px)";
+  } else {
+    convertAlltoC();
+    isCelcius = true;
+    switchKnob.style.transform = "translateX(4px)";
   }
-})
+});
 
 window.addEventListener("load", updateRecentDropdown);
-
