@@ -133,7 +133,7 @@ function convertAlltoC() {
 function applyRainBg(data){
   const bgVideo = document.getElementById("bg-video");
     let weather = data.list[0].weather[0].main
-if (weather === "Rain" || weather === "Snow" || weather === "Thunderstorm") {
+if (["Rain", "Snow", "Thunderstorm"].includes(weather)) {
     bgVideo.src = `./bg-vedios/${weather}.mp4`;  
     bgVideo.style.display = "block";  
     document.body.style.background = "none"; 
@@ -170,7 +170,6 @@ function fetchForecast(url) {
       console.log(data);
       saveCityToStorage(data.city.name);
       const fiveDaysData = [];
-
       let lastDate = "";
       data.list.forEach((item) => {
         let date = item.dt_txt.split(" ")[0];
@@ -336,9 +335,9 @@ toggleBtn.addEventListener("click", () => {
   }
 });
 
-window.addEventListener("load", updateRecentDropdown);
-window.addEventListener("load", () => {
-  navigator.geolocation.getCurrentPosition(
+window.addEventListener("load",  ()=>{
+  updateRecentDropdown()
+    navigator.geolocation.getCurrentPosition(
     (position) => {
       let longitude = position.coords.longitude;
       let latitude = position.coords.latitude;
